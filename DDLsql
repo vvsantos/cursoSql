@@ -1,0 +1,57 @@
+
+CREATE TABLE bairro (
+    cod_bairro        NUMBER NOT NULL,
+    nome              VARCHAR2(30),
+    cidade_cod_cidade NUMBER NOT NULL
+);
+
+ALTER TABLE bairro ADD CONSTRAINT bairro_pk PRIMARY KEY ( cod_bairro );
+
+CREATE TABLE cidade (
+    cod_cidade        NUMBER NOT NULL,
+    nome              VARCHAR2(30),
+    estado_cod_estado NUMBER NOT NULL
+);
+
+ALTER TABLE cidade ADD CONSTRAINT cidade_pk PRIMARY KEY ( cod_cidade );
+
+CREATE TABLE end_cliente (
+    cod_end           NUMBER NOT NULL,
+    logradouro        VARCHAR2(50),
+    numero            NUMBER,
+    referencia        VARCHAR2(30),
+    bairro_cod_bairro NUMBER NOT NULL
+);
+
+ALTER TABLE end_cliente ADD CONSTRAINT end_cliente_pk PRIMARY KEY ( cod_end );
+
+CREATE TABLE estado (
+    cod_estado    NUMBER NOT NULL,
+    nome          VARCHAR2(30),
+    pais_cod_pais NUMBER NOT NULL
+);
+
+ALTER TABLE estado ADD CONSTRAINT estado_pk PRIMARY KEY ( cod_estado );
+
+CREATE TABLE pais (
+    cod_pais NUMBER NOT NULL,
+    nome     VARCHAR2(30)
+);
+
+ALTER TABLE pais ADD CONSTRAINT pais_pk PRIMARY KEY ( cod_pais );
+
+ALTER TABLE bairro
+    ADD CONSTRAINT bairro_cidade_fk FOREIGN KEY ( cidade_cod_cidade )
+        REFERENCES cidade ( cod_cidade );
+
+ALTER TABLE cidade
+    ADD CONSTRAINT cidade_estado_fk FOREIGN KEY ( estado_cod_estado )
+        REFERENCES estado ( cod_estado );
+
+ALTER TABLE end_cliente
+    ADD CONSTRAINT end_cliente_bairro_fk FOREIGN KEY ( bairro_cod_bairro )
+        REFERENCES bairro ( cod_bairro );
+
+ALTER TABLE estado
+    ADD CONSTRAINT estado_pais_fk FOREIGN KEY ( pais_cod_pais )
+        REFERENCES pais ( cod_pais );
